@@ -7,7 +7,7 @@ def filter_by_state(operations: list[dict], state: str = "EXECUTED") -> list[dic
         state (str): Значение ключа 'state' для фильтрации. По умолчанию 'EXECUTED'.
 
     Returns:
-        list[dict]: Отфильтрованный список операций.
+        list[dict]: Отфильтрованный список операций
     """
     return [op for op in operations if op.get("state") == state]
 
