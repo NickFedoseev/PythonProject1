@@ -1,29 +1,37 @@
 def filter_by_state(operations: list[dict], state: str = "EXECUTED") -> list[dict]:
     """
-    Фильтрует список операций по значению ключа 'state'.
+    Фильтрует операции по статусу.
 
     Args:
-        operations (list[dict]): Список словарей с данными об операциях.
-        state (str): Значение ключа 'state' для фильтрации. По умолчанию 'EXECUTED'.
+        operations: Список операций (каждая — словарь с ключом 'state').
+        state: Статус для фильтрации. По умолчанию — 'EXECUTED'.
 
     Returns:
-        list[dict]: Отфильтрованный список операций.
+        Список операций с указанным статусом.
     """
-    return [op for op in operations if op.get("state") == state]
+    return [
+        operation
+        for operation in operations
+        if operation.get("state") == state
+    ]
 
 
 def sort_by_date(operations: list[dict], reverse: bool = True) -> list[dict]:
     """
-    Сортирует список операций по дате.
+    Сортирует операции по дате.
 
     Args:
-        operations (list[dict]): Список словарей с данными об операциях.
-        reverse (bool): Порядок сортировки: по убыванию (True), по возрастанию (False).
+        operations: Список операций (каждая — словарь с ключом 'date').
+        reverse: Если True, сортирует от новых к старым.
 
     Returns:
-        list[dict]: Список операций, отсортированный по дате.
+        Отсортированный список операций.
     """
-    return sorted(operations, key=lambda x: x["date"], reverse=reverse)
+    return sorted(
+        operations,
+        key=lambda operation: operation["date"],
+        reverse=reverse
+    )
 
 
 if __name__ == "__main__":
