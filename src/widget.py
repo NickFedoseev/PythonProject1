@@ -31,13 +31,34 @@ def get_date(date_str: str) -> str:
     Принимает строку с датой в формате '2024-03-11T02:26:18.671407'
     Возвращает дату в формате 'ДД.ММ.ГГГГ', например '11.03.2024'
     """
-    year = date_str[0:4]  # Год — первые 4 символа
-    month = date_str[5:7]  # Месяц — символы 5 и 6
-    day = date_str[8:10]  # День — символы 8 и 9
+    # Проверяем минимальную длину и формат до обращения к индексам
+    if not date_str or len(date_str) < 10 or date_str[4] != "-" or date_str[7] != "-":
+        raise ValueError("Неверный формат даты")
 
-    return f"{day}.{month}.{year}"
+    # Проверяем наличие 'T' только если строка достаточно длинная
+    if len(date_str) >= 11 and date_str[10] != "T":
+        raise ValueError("Неверный формат даты")
 
+    try:
+        year = date_str[0:4]
+        month = date_str[5:7]
+        day = date_str[8:10]
 
-if __name__ == "__main__":
-    print(mask_account_card("Visa Platinum 7000792289606361"))  # Visa Platinum 7000 79** **** 6361
-    print(get_date("2024-03-11T02:26:18.671407"))  # Вывод: 11.03.2024
+        # Проверка, что год, месяц и день являются числами
+        if not (year.isdigit() and month.isdigit() and day.isdigit()):
+            raise ValueError("Неверный формат даты")
+
+        month_num = int(month)
+        day_num = int(day)
+
+        # Проверка корректности месяца и дня
+        if not (1 <= month_num <= 12):
+            raise ValueError("Неверный месяц")
+        if not (1 <= day_num <= 31):
+            raise ValueError("Неверный день")
+
+        return f"{day}.{month}.{year}"
+    except ValueError as e:
+        if str(e) in ["Неверный месяц", "Неверный день"]:
+            raise
+        raise ValueError("Неверный формат даты")
