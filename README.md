@@ -1,50 +1,33 @@
 # Обработка банковской информации
 
 ## Описание
-<<<<<<< HEAD
 
 Проект предоставляет набор инструментов для обработки банковских операций:
 
-=======
-Проект предоставляет набор инструментов для обработки банковских операций:
->>>>>>> develop
 - **Маскировка данных**: скрытие номеров карт и счетов.
 - **Форматирование дат**: приведение дат к удобочитаемому виду.
 - **Фильтрация и сортировка**: выборка операций по статусу и сортировка по дате.
+- **Генераторы**: эффективная обработка больших объемов транзакций.
 
 ## Установка
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
 1. Убедитесь, что у вас установлен [Poetry](https://python-poetry.org/docs/#installation):
-   ```bash
-   curl -sSL https://install.python-poetry.org | python3 -
-   ```
-2. Клонируйте репозиторий:
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
+```
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+2. Клонируйте репозиторий:
+
 ```
 git clone https://github.com/NickFedoseev/PythonProject1.git
 cd PythonProject1
 ```
-<<<<<<< HEAD
 
 3. Установите зависимости:
 
 ```
 poetry install
-=======
-3. Установите зависимости:
-```
-poetry install
-```
-4. Активируйте виртуальное окружение:
-```
-poetry shell
->>>>>>> develop
 ```
 
 4. Активируйте виртуальное окружение:
@@ -97,12 +80,32 @@ print(mask_account_card("Visa Platinum 7000792289606361"))  # Visa Platinum 7000
 # Преобразование даты в формат DD.MM.YYYY
 print(get_date("2024-03-11T02:26:18.671407"))  # 11.03.2024
 ```
-<<<<<<< HEAD
+
+Генераторы
+
+```
+from src.generators import (
+    filter_by_currency,
+    transaction_descriptions,
+    card_number_generator
+)
+
+# Фильтрация транзакций по валюте
+usd_transactions = filter_by_currency(transactions, "USD")
+print(next(usd_transactions))
+
+# Получение описаний транзакций
+descriptions = transaction_descriptions(transactions)
+print(next(descriptions))
+
+# Генерация номеров карт
+for card_number in card_number_generator(1, 5):
+    print(card_number)  # 0000 0000 0000 0001 ... 0000 0000 0000 0005
+```
 
 ## Тестирование
 
 Проект покрыт модульными тестами с использованием pytest. Покрытие функционального кода превышает 80%.
-
 Запуск тестов
 
 ```
@@ -120,9 +123,7 @@ poetry run pytest --cov=src --cov-report=html --cov-report=term
 - В терминале отображается процент покрытия.
 - Генерируется папка htmlcov/ с детальным HTML-отчётом.
 - Чтобы просмотреть отчёт, откройте файл htmlcov/index.html в браузере.
-
-Особенности тестовой реализации:
-
+  Особенности тестовой реализации:
 - Использованы фикстуры для подготовки входных данных.
 - Применена параметризация (@pytest.mark.parametrize) для проверки различных сценариев.
 - Код протестирован на корректные и граничные значения, включая обработку исключений.
@@ -130,11 +131,3 @@ poetry run pytest --cov=src --cov-report=html --cov-report=term
 ## Лицензия
 
 MIT License.
-=======
-##Запуск тестов
-```
-poetry run pytest
-```
-## Лицензия 
-MIT License.
->>>>>>> develop
