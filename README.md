@@ -8,6 +8,8 @@
 - **Форматирование дат**: приведение дат к удобочитаемому виду.
 - **Фильтрация и сортировка**: выборка операций по статусу и сортировка по дате.
 - **Генераторы**: эффективная обработка больших объемов транзакций.
+- **Чтение JSON**: загрузка транзакций из файла.
+- **Конвертация валют**: автоматическая конвертация сумм из USD/EUR в рубли через внешний API.
 
 ## Установка
 
@@ -35,6 +37,19 @@ poetry install
 ```
 poetry shell
 ```
+
+5. Создайте файл `.env` на основе шаблона:
+
+```
+cp .env.template .env
+```
+
+6. Откройте `.env` и вставьте ваш API-ключ:
+
+```
+EXCHANGE_RATES_API_KEY=ваш_ключ_с_https://apilayer.com/
+```
+🔑 Получить бесплатный ключ → [apilayer.com](https://apilayer.com/marketplace/exchangerates_data-api) 
 
 ## Использование
 
@@ -103,6 +118,46 @@ for card_number in card_number_generator(1, 5):
     print(card_number)  # 0000 0000 0000 0001 ... 0000 0000 0000 0005
 ```
 
+Чтение транзакций из JSON
+
+```
+from src.utils import read_json_file
+
+# Чтение списка транзакций из файла
+transactions = read_json_file("data/operations.json")
+
+# Пример транзакции:
+# {
+#   "id": 441945886,
+#   "state": "EXECUTED",
+#   "date": "2019-08-26T10:50:58.294041",
+#   "operationAmount": {
+#     "amount": "31957.58",
+#     "currency": { "name": "руб.", "code": "RUB" }
+#   },
+#   ...
+# }
+```
+
+Конвертация валют в рубли
+
+```
+from src.external_api import convert_currency
+
+# Пример транзакции в USD
+transaction_usd = {
+    "operationAmount": {
+        "amount": "100.0",
+        "currency": {"code": "USD"}
+    }
+}
+
+# Конвертирует в рубли через API
+rub_amount = convert_currency(transaction_usd)
+print(f"{rub_amount:.2f} RUB")  # например: 9000.00 RUB (зависит от курса)
+```
+Для работы конвертации обязательно нужен API-ключ в `.env`.
+
 Декоратор log
 
 Реализован декоратор для логирования выполнения функций:
@@ -143,6 +198,7 @@ poetry run pytest --cov=src --cov-report=html --cov-report=term
 - Использованы фикстуры для подготовки входных данных.
 - Применена параметризация (@pytest.mark.parametrize) для проверки различных сценариев.
 - Код протестирован на корректные и граничные значения, включая обработку исключений.
+- Для external_api и utils используются Mock и patch для изоляции от внешних зависимостей.
 
 ## Лицензия
 
