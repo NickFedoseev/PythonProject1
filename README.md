@@ -10,6 +10,7 @@
 - **Генераторы**: эффективная обработка больших объемов транзакций.
 - **Чтение JSON**: загрузка транзакций из файла.
 - **Конвертация валют**: автоматическая конвертация сумм из USD/EUR в рубли через внешний API.
+- **Чтение CSV и Excel**: поддержка загрузки транзакций из файлов форматов `.csv` и `.xlsx`.
 
 ## Установка
 
@@ -173,6 +174,30 @@ def example(arg):
 Логирует:
 - Успешное выполнение: `имя_функции ok`
 - Ошибки: `имя_функции error: ТипОшибки. Inputs: аргументы`
+
+Чтение транзакций из CSV и Excel
+
+```python
+from src.utils import read_transactions_from_csv, read_transactions_from_excel
+
+# Чтение из CSV
+transactions_csv = read_transactions_from_csv("data/transactions.csv")
+
+# Чтение из Excel
+transactions_excel = read_transactions_from_excel("data/transactions_excel.xlsx")
+
+# Оба метода возвращают список словарей:
+# [
+#   {
+#     "id": 1,
+#     "state": "EXECUTED",
+#     "date": "2023-01-01",
+#     "amount": "100.00",
+#     "currency": "USD",
+#     ...
+#   },
+#   ...
+# ]
 
 ## Тестирование
 
