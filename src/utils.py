@@ -34,8 +34,12 @@ def read_json_file(file_path: str) -> List[Dict[str, Any]]:
             data = json.load(file)
 
             if isinstance(data, list):
-                utils_logger.info(f"Успешно прочитано {len(data)} записей из файла: {file_path}")
-                return data
+                # !!! КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: Фильтруем невалидные элементы !!!
+                # Проверяем, что элемент является словарем и не является пустым словарем
+                valid_data = [item for item in data if isinstance(item, dict) and item]
+
+                utils_logger.info(f"Успешно прочитано {len(valid_data)} валидных записей из файла: {file_path}")
+                return valid_data
             else:
                 utils_logger.warning(f"Файл {file_path} не содержит список данных")
                 return []
@@ -51,10 +55,4 @@ def read_json_file(file_path: str) -> List[Dict[str, Any]]:
         return []
     except IsADirectoryError:
         utils_logger.error(f"Указанный путь является директорией: {file_path}")
-        return []
-    except UnicodeDecodeError:
-        utils_logger.error(f"Проблемы с кодировкой файла: {file_path}")
-        return []
-    except Exception as e:
-        utils_logger.error(f"Неизвестная ошибка при чтении файла {file_path}: {e}")
         return []

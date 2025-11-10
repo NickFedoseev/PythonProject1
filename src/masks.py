@@ -16,7 +16,7 @@ logger = logging.getLogger("masks")
 logger.setLevel(logging.DEBUG)
 
 # Создаём обработчик — запись в файл, перезапись при каждом запуске
-file_handler = logging.FileHandler(log_file_path, mode='w', encoding='utf-8')
+file_handler = logging.FileHandler(log_file_path, mode="w", encoding="utf-8")
 file_handler.setLevel(logging.DEBUG)
 
 # Формат: время - модуль - уровень - сообщение
