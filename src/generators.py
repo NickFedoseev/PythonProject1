@@ -1,4 +1,4 @@
-from collections.abc import Iterator
+from typing import Iterator
 
 
 def filter_by_currency(transactions: list[dict], currency: str) -> Iterator[dict]:
@@ -13,7 +13,9 @@ def filter_by_currency(transactions: list[dict], currency: str) -> Iterator[dict
         Транзакции с указанной валютой.
     """
     for transaction in transactions:
-        if transaction["operationAmount"]["currency"]["code"] == currency:
+        # !!! ИСПРАВЛЕНИЕ: Используем .get() для безопасного доступа !!!
+        currency_code = transaction.get("operationAmount", {}).get("currency", {}).get("code")
+        if currency_code == currency:
             yield transaction
 
 
@@ -28,7 +30,10 @@ def transaction_descriptions(transactions: list[dict]) -> Iterator[str]:
         Описание каждой транзакции.
     """
     for transaction in transactions:
-        yield transaction["description"]
+        # !!! ИСПРАВЛЕНИЕ: Используем .get() для безопасного доступа !!!
+        description = transaction.get("description")
+        if description:
+            yield description
 
 
 def card_number_generator(start: int, stop: int) -> Iterator[str]:
@@ -52,6 +57,6 @@ def card_number_generator(start: int, stop: int) -> Iterator[str]:
 
         # Разбиваем строку на блоки по 4 символа и соединяем пробелами
         # i = 0, 4, 8, 12 → срезы: [0:4], [4:8], [8:12], [12:16]
-        formatted = " ".join([card_str[i: i + 4] for i in range(0, 16, 4)])
+        formatted = " ".join([card_str[i : i + 4] for i in range(0, 16, 4)])
 
         yield formatted
